@@ -10,6 +10,14 @@
 #define DIRECTORY_INDEX 2
 #define THREAD_NO_INDEX 4
 
+struct wordInfo {
+    char* word;
+    char* filename;
+};
+
+struct wordInfo *arrayOfWords;
+int sizeArrayOfWords = 0;
+
 struct queue* queue;
 
 void validateArguments(int argc) {
@@ -43,6 +51,24 @@ void addTextFileNamesToQueue(char * directory) {
 
 }
 
+
+// Doubles the size of arrayOfWords
+// returns new size
+int doubleSizeArrayOfWords() {
+    // if it was not initialized
+    // initializes it to hold 8 elements
+    if (sizeArrayOfWords==0) {
+        sizeArrayOfWords = 8;
+        arrayOfWords = malloc(sizeof(struct wordInfo) * sizeArrayOfWords);
+    }
+    // if was initialized
+    else {
+        sizeArrayOfWords *= 2;
+        arrayOfWords = realloc(arrayOfWords, sizeArrayOfWords);
+    }
+    return sizeArrayOfWords;
+}
+
 int main(int argc, char** argv) {
     validateArguments(argc);    
     char * directory = extractDirectoryFromArguments(argv);
@@ -51,7 +77,6 @@ int main(int argc, char** argv) {
     queue = createQueue();
     addTextFileNamesToQueue(directory);
 
-
-
+    
     return 0;
 }
