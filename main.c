@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
+#include <pthread.h>
 
 #include "queue.h"
 #include "main.h"
@@ -11,6 +12,10 @@
 #define THREAD_NO_INDEX 4
 #define BUFFER_SIZE 1024
 #define DELIMETERS "-?!.,:; \n\t"
+
+pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t array_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t index_mutex = PTHREAD_MUTEX_INITIALIZER;  
 
 struct wordInfo {
     char* word;
@@ -74,17 +79,20 @@ int doubleSizeArrayOfWords() {
     return sizeArrayOfWords;
 }
 
-void worker() {
+void* worker(void * args) {
     char * fileName;
     char * filePath = malloc(150);
     struct wordInfo * currentWordInfo = NULL;
     while (1) {
         // acquire queue lock
+        pthread_mutex_lock(&queue_mutex);
         fileName = queueRemove(queue);
         // release queue lock
+        pthread_mutex_unlock(&queue_mutex);
+
         if (fileName == NULL) {
             free(filePath);
-            return;
+            pthread_exit(NULL);
         }
             
 
@@ -103,20 +111,26 @@ void worker() {
             while( word != NULL ){
                 if (arrayOfWordsIndex >= sizeArrayOfWords) {
                     // acquire array lock
-                    printf("doubled array elements size to %d\n", doubleSizeArrayOfWords());
+                    pthread_mutex_lock(&array_mutex);
+                    printf("thread id: %ld doubled array elements size to %d\n", pthread_self(),doubleSizeArrayOfWords());
                     // release array lock
+                    pthread_mutex_unlock(&array_mutex);
                 }
                 // printf( "-%s-\n", word );
 
                 // acquire array lock
+                pthread_mutex_lock(&array_mutex);
                 arrayOfWords[arrayOfWordsIndex].filename = strdup(fileName);
                 arrayOfWords[arrayOfWordsIndex].word = strdup(word);
-                printf("%s\n", word);
+                printf("thread id %ld %s\n", pthread_self(),word);
+                pthread_mutex_unlock(&array_mutex);
                 // release array lock
 
                 // acquire index lock
+                pthread_mutex_lock(&index_mutex);
                 arrayOfWordsIndex++;
                 // release index lock
+                pthread_mutex_unlock(&index_mutex);
 
 
                 word = strtok(NULL, DELIMETERS);
@@ -135,10 +149,18 @@ int main(int argc, char** argv) {
     
     queue = createQueue();
     addTextFileNamesToQueue(directory);
-    
-    worker();
 
-    printf("--word is %s\n", arrayOfWords[3000].word);
-    printf("last index is %d\n", arrayOfWordsIndex);
+    pthread_t threads[noOfThreads];
+    for (int i=0; i < noOfThreads; i++) {
+        pthread_create(&threads[i], NULL, worker, NULL);
+    }
+
+    for (int i=0; i < noOfThreads; i++) {
+        pthread_join(threads[i], NULL);
+    }
+
+    printf("word count is %d \n", arrayOfWordsIndex);
+    puts("finish");
+
     return 0;
 }
