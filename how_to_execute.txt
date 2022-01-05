@@ -1,1 +1,2 @@
 gcc queue.c main.c -o main
+./main -d /home/cem/Desktop/c-pthreads/textfiles -n 4

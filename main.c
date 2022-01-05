@@ -9,14 +9,18 @@
 
 #define DIRECTORY_INDEX 2
 #define THREAD_NO_INDEX 4
+#define BUFFER_SIZE 1024
+#define DELIMETERS "?!.,:; \n\t"
 
 struct wordInfo {
     char* word;
     char* filename;
 };
 
+char * directory;
 struct wordInfo *arrayOfWords;
 int sizeArrayOfWords = 0;
+int wordCount = 0;
 
 struct queue* queue;
 
@@ -69,13 +73,50 @@ int doubleSizeArrayOfWords() {
     return sizeArrayOfWords;
 }
 
+void worker() {
+    char * fileName;
+    char * filePath = malloc(150);
+    while (1) {
+        // acquire queue lock
+        fileName = queueRemove(queue);
+        // release queue lock
+        if (fileName == NULL)
+            return;
+
+       
+        strcat(filePath, directory);
+        strcat(filePath, "/");
+        strcat(filePath, fileName);
+
+        
+        FILE *textFile = fopen(filePath, "r");
+        char buffer[BUFFER_SIZE];
+        char *word;
+
+        // Read each line into the buffer
+        while(fgets(buffer, BUFFER_SIZE, textFile) != NULL){
+            // Gets each token as a string and prints it
+            word = strtok(buffer, DELIMETERS);
+            while( word != NULL ){
+                printf( "-%s-\n", word );
+                word = strtok(NULL, DELIMETERS);
+            }
+        }
+        fclose(textFile);
+        strcpy(filePath, "");
+    }
+    free(filePath);
+}
+
 int main(int argc, char** argv) {
     validateArguments(argc);    
-    char * directory = extractDirectoryFromArguments(argv);
+    directory = extractDirectoryFromArguments(argv);
     int noOfThreads = extractNumberOfThreadsFromArguments(argv);
     
     queue = createQueue();
     addTextFileNamesToQueue(directory);
+    
+    worker();
 
     
     return 0;
