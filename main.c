@@ -7,7 +7,6 @@
 
 #define DIRECTORY_INDEX 2
 #define THREAD_NO_INDEX 4
-#define MAX_QUEUE_SIZE 20000
 
 
 void validateArguments(int argc) {
