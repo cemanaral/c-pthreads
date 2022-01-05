@@ -18,7 +18,7 @@ struct wordInfo {
 };
 
 char * directory;
-struct wordInfo **arrayOfWords;
+struct wordInfo *arrayOfWords;
 int sizeArrayOfWords = 0;
 int arrayOfWordsIndex = 0;
 int wordCount = 0;
@@ -69,7 +69,7 @@ int doubleSizeArrayOfWords() {
     // if was initialized
     else {
         sizeArrayOfWords *= 2;
-        arrayOfWords = realloc(arrayOfWords, sizeArrayOfWords);
+        arrayOfWords = realloc(arrayOfWords, sizeof(struct wordInfo) * sizeArrayOfWords);
     }
     return sizeArrayOfWords;
 }
@@ -101,7 +101,7 @@ void worker() {
         while(fgets(buffer, BUFFER_SIZE, textFile) != NULL){
             word = strtok(buffer, DELIMETERS);
             while( word != NULL ){
-                if (arrayOfWordsIndex == sizeArrayOfWords) {
+                if (arrayOfWordsIndex >= sizeArrayOfWords) {
                     // acquire array lock
                     printf("doubled array elements size to %d\n", doubleSizeArrayOfWords());
                     // release array lock
@@ -109,11 +109,9 @@ void worker() {
                 // printf( "-%s-\n", word );
 
                 // acquire array lock
-                currentWordInfo = malloc(sizeof (struct wordInfo));
-                currentWordInfo->filename = strdup(fileName);
-                currentWordInfo->word = strdup(word);
-
-                arrayOfWords[arrayOfWordsIndex] = currentWordInfo;
+                arrayOfWords[arrayOfWordsIndex].filename = fileName;
+                arrayOfWords[arrayOfWordsIndex].word = word;
+                printf("%s\n", word);
                 // release array lock
 
                 // acquire index lock
