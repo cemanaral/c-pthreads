@@ -1,4 +1,4 @@
--First-
+doubled array elements size to 8-First-
 -of-
 -all-
 -I'm-

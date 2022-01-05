@@ -18,8 +18,9 @@ struct wordInfo {
 };
 
 char * directory;
-struct wordInfo *arrayOfWords;
+struct wordInfo **arrayOfWords;
 int sizeArrayOfWords = 0;
+int arrayOfWordsIndex = 0;
 int wordCount = 0;
 
 struct queue* queue;
@@ -76,12 +77,16 @@ int doubleSizeArrayOfWords() {
 void worker() {
     char * fileName;
     char * filePath = malloc(150);
+    struct wordInfo * currentWordInfo = NULL;
     while (1) {
         // acquire queue lock
         fileName = queueRemove(queue);
         // release queue lock
-        if (fileName == NULL)
+        if (fileName == NULL) {
+            free(filePath);
             return;
+        }
+            
 
        
         strcat(filePath, directory);
@@ -93,19 +98,36 @@ void worker() {
         char buffer[BUFFER_SIZE];
         char *word;
 
-        // Read each line into the buffer
         while(fgets(buffer, BUFFER_SIZE, textFile) != NULL){
-            // Gets each token as a string and prints it
             word = strtok(buffer, DELIMETERS);
             while( word != NULL ){
-                printf( "-%s-\n", word );
+                if (arrayOfWordsIndex == sizeArrayOfWords) {
+                    // acquire array lock
+                    printf("doubled array elements size to %d\n", doubleSizeArrayOfWords());
+                    // release array lock
+                }
+                // printf( "-%s-\n", word );
+
+                // acquire array lock
+                currentWordInfo = malloc(sizeof (struct wordInfo));
+                currentWordInfo->filename = strdup(fileName);
+                currentWordInfo->word = strdup(word);
+
+                arrayOfWords[arrayOfWordsIndex] = currentWordInfo;
+                // release array lock
+
+                // acquire index lock
+                arrayOfWordsIndex++;
+                // release index lock
+
+
                 word = strtok(NULL, DELIMETERS);
             }
         }
         fclose(textFile);
         strcpy(filePath, "");
     }
-    free(filePath);
+    
 }
 
 int main(int argc, char** argv) {
