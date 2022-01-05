@@ -86,11 +86,9 @@ having
 highly
 developed
 senses
--
 Don't
 eat
 that
--
 What's
 going
 on
@@ -131,9 +129,9 @@ That's
 right
 Poison
 checker
-doubled array elements size to 256
 Cleanerific
 Cleanerino
+doubled array elements size to 256
 Close
 to
 godliness
@@ -212,11 +210,9 @@ one
 is
 the
 chef
--
 Oh
 that
 guy
--
 Very
 good
 Who
@@ -260,11 +256,11 @@ Commis
 commis
 they're
 cooks
-doubled array elements size to 512
 Very
 important
 You
 are
+doubled array elements size to 512
 a
 clever
 rat
@@ -301,11 +297,9 @@ garbage
 He
 doesn't
 cook
--
 But
 he
 could
--
 Uh
 no
 How
@@ -429,7 +423,6 @@ ja
 Five
 minutes
 chef
--
 Oh
 God
 Tonight
@@ -517,7 +510,6 @@ They
 don't
 just
 survive
-doubled array elements size to 1024
 They
 discover
 they
@@ -525,6 +517,7 @@ create
 I
 mean
 just
+doubled array elements size to 1024
 look
 at
 what
@@ -884,7 +877,8 @@ It's
 got
 like
 this
-"ba-boom
+"ba
+boom
 zap"
 kind
 of
@@ -892,18 +886,18 @@ taste
 Don't
 you
 think
--
 What
 would
 you
 call
 that
 flavor
--
-Lightning-y
+Lightning
+y
 Yeah
 It's
-lightning-y
+lightning
+y
 We
 got
 to
@@ -1030,13 +1024,13 @@ the
 tank
 your
 engine
-doubled array elements size to 2048
 is
 gonna
 die
 Now
 shut
 up
+doubled array elements size to 2048
 and
 eat
 your
@@ -1170,21 +1164,17 @@ her
 to
 the
 colony
--
 Help
 Remy
 help
--
 Emile
 Start
 swinging
 the
 light
--
 Help
 Remy
 help
--
 Emile
 Start
 swinging
@@ -1206,13 +1196,11 @@ boats
 Let
 me
 through
--
 The
 book
 Let
 me
 through
--
 The
 book
 Excuse
@@ -1243,12 +1231,10 @@ Come
 on
 Get
 hold
--
 Take
 the
 baby
 Here
--
 Give
 me
 your
@@ -1264,13 +1250,11 @@ Do
 we
 have
 everybody
--
 Wait
 a
 minute
 Where's
 Remy
--
 Right
 here
 I'm
@@ -1301,9 +1285,7 @@ You
 can
 do
 it
--
 Remy
--
 Dad
 Come
 on
@@ -1370,12 +1352,10 @@ my
 friends
 probably
 forever
--
 How
 do
 you
 know
--
 Well
 I
 You
@@ -1496,13 +1476,11 @@ who
 love
 to
 cook
--
 You
 think
 I
 am
 playing
--
 You
 don't
 have
@@ -1642,7 +1620,6 @@ chef
 Hello
 Chef
 Skinner
--
 Evening
 chef
 Ordering
@@ -1659,9 +1636,7 @@ Linguini
 Renata's
 little
 boy
--
 Hi
--
 All
 grown
 up
@@ -1672,12 +1647,10 @@ Renata
 Gusteau's
 old
 flame
--
 Yes
 How
 are
 you
--
 Linguini
 Yes
 Linguini
@@ -1689,18 +1662,14 @@ to
 visit
 How
 is
--
 My
 mother
--
 Renata
--
 Yes
 Renata
 How
 is
 she
--
 Good
 Well
 not
@@ -1725,11 +1694,10 @@ she's
 covered
 You
 know
-afterlife-wise
--
+afterlife
+wise
 What's
 this
--
 She
 left
 it
@@ -1762,18 +1730,15 @@ I
 get
 the
 feeling
--
 it's
 in
 the
 kitchen
--
 It's
 in
 the
 kitchen
 Saffron
--
 Not
 good
 Saffron
@@ -1837,11 +1802,9 @@ cookbook
 Wait
 You
 read
--
 Well
 not
 excessively
--
 Oh
 man
 Does
@@ -1884,7 +1847,8 @@ cooking
 and
 reading
 and
-TV-watching
+TV
+watching
 while
 we
 read
@@ -2055,7 +2019,6 @@ toast
 of
 Paris
 booked
-doubled array elements size to 4096
 five
 months
 in
@@ -2085,12 +2048,14 @@ ever
 to
 achieve
 a
-five-star
+five
+star
 rating
 Chef
 Gusteau's
 cookbook
 Anyone
+doubled array elements size to 4096
 Can
 Cook
 Climbed
@@ -2160,3 +2125,5 @@ bit
 What's
 my
 problem
+--word is problem
+last index is 2117

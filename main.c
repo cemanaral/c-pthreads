@@ -10,7 +10,7 @@
 #define DIRECTORY_INDEX 2
 #define THREAD_NO_INDEX 4
 #define BUFFER_SIZE 1024
-#define DELIMETERS "?!.,:; \n\t"
+#define DELIMETERS "-?!.,:; \n\t"
 
 struct wordInfo {
     char* word;
@@ -109,8 +109,8 @@ void worker() {
                 // printf( "-%s-\n", word );
 
                 // acquire array lock
-                arrayOfWords[arrayOfWordsIndex].filename = fileName;
-                arrayOfWords[arrayOfWordsIndex].word = word;
+                arrayOfWords[arrayOfWordsIndex].filename = strdup(fileName);
+                arrayOfWords[arrayOfWordsIndex].word = strdup(word);
                 printf("%s\n", word);
                 // release array lock
 
@@ -138,6 +138,7 @@ int main(int argc, char** argv) {
     
     worker();
 
-    
+    printf("--word is %s\n", arrayOfWords[3000].word);
+    printf("last index is %d\n", arrayOfWordsIndex);
     return 0;
 }
