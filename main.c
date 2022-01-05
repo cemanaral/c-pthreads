@@ -2,14 +2,12 @@
 #include <stdlib.h>
 #include <stdlib.h>
 
-/* Function Headers */
-void validateArguments(int argc);
-char * extractDirectoryFromArguments(char** argv);
-int extractNumberOfThreadsFromArguments(char** argv); 
+#include "queue.h"
+#include "main.h"
 
 #define DIRECTORY_INDEX 2
 #define THREAD_NO_INDEX 4
-
+#define MAX_QUEUE_SIZE 20000
 
 
 void validateArguments(int argc) {
@@ -33,5 +31,7 @@ int main(int argc, char** argv) {
     char * directory = extractDirectoryFromArguments(argv);
     int noOfThreads = extractNumberOfThreadsFromArguments(argv);
     
+
+
     return 0;
 }
