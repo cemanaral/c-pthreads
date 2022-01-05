@@ -25,12 +25,20 @@ int extractNumberOfThreadsFromArguments(char** argv) {
     return atoi(argv[THREAD_NO_INDEX]);
 }
 
+void initializeQueues(struct queue** queues, int noOfThreads) {
+    for (int i=0; i < noOfThreads; i++) {
+        queues[i] = createQueue();
+    }    
+}
+
 int main(int argc, char** argv) {
     validateArguments(argc);    
     char * directory = extractDirectoryFromArguments(argv);
     int noOfThreads = extractNumberOfThreadsFromArguments(argv);
     
 
+    struct queue* queues[noOfThreads];
+    initializeQueues(queues, noOfThreads);
 
     return 0;
 }

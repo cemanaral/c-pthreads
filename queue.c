@@ -17,9 +17,9 @@ struct queue {
 
 struct queue* createQueue() {
     struct queue* queue = (struct queue*) malloc(sizeof(struct queue));
-    queue->maxSize = 99999;
+    queue->maxSize = 100000;
     queue->head = queue->currentSize = 0;
-    queue->back = 99998;
+    queue->back = 100000 - 1;
     queue->array = (char**) malloc(queue->maxSize);
     return queue;
 }
