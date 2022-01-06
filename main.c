@@ -107,7 +107,8 @@ void* worker(void * args) {
         char *word;
 
         while(fgets(buffer, BUFFER_SIZE, textFile) != NULL){
-            word = strtok(buffer, DELIMETERS);
+            char* rest = buffer;
+            word = strtok_r(rest, DELIMETERS, &rest);
             while( word != NULL ){
 
                 pthread_mutex_lock(&array_mutex);
@@ -119,7 +120,7 @@ void* worker(void * args) {
                 arrayOfWords[arrayOfWordsIndex].word = strdup(word);
                 printf("thread id %ld %s\n", pthread_self(),word);
                 arrayOfWordsIndex++;
-                word = strtok(NULL, DELIMETERS);
+                word = strtok_r(rest, DELIMETERS, &rest);
                 pthread_mutex_unlock(&array_mutex);
                 
             }
