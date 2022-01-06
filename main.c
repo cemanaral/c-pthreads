@@ -15,7 +15,7 @@
 
 pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t array_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t index_mutex = PTHREAD_MUTEX_INITIALIZER;  
+
 
 struct wordInfo {
     char* word;
@@ -120,18 +120,14 @@ void* worker(void * args) {
 
                 // acquire array lock
                 pthread_mutex_lock(&array_mutex);
+                printf("thread:%ld arrayOfWordsIndex:%d\n", pthread_self(),arrayOfWordsIndex);
                 arrayOfWords[arrayOfWordsIndex].filename = strdup(fileName);
                 arrayOfWords[arrayOfWordsIndex].word = strdup(word);
                 printf("thread id %ld %s\n", pthread_self(),word);
+                
+                arrayOfWordsIndex++;
                 pthread_mutex_unlock(&array_mutex);
                 // release array lock
-
-                // acquire index lock
-                pthread_mutex_lock(&index_mutex);
-                arrayOfWordsIndex++;
-                // release index lock
-                pthread_mutex_unlock(&index_mutex);
-
 
                 word = strtok(NULL, DELIMETERS);
             }
