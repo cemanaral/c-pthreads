@@ -109,27 +109,19 @@ void* worker(void * args) {
         while(fgets(buffer, BUFFER_SIZE, textFile) != NULL){
             word = strtok(buffer, DELIMETERS);
             while( word != NULL ){
-                if (arrayOfWordsIndex >= sizeArrayOfWords) {
-                    // acquire array lock
-                    pthread_mutex_lock(&array_mutex);
-                    printf("thread id: %ld doubled array elements size to %d\n", pthread_self(),doubleSizeArrayOfWords());
-                    // release array lock
-                    pthread_mutex_unlock(&array_mutex);
-                }
-                // printf( "-%s-\n", word );
 
-                // acquire array lock
                 pthread_mutex_lock(&array_mutex);
+                if (arrayOfWordsIndex >= sizeArrayOfWords) {
+                    printf("thread id: %ld doubled array elements size to %d\n", pthread_self(),doubleSizeArrayOfWords());
+                }
                 printf("thread:%ld arrayOfWordsIndex:%d\n", pthread_self(),arrayOfWordsIndex);
                 arrayOfWords[arrayOfWordsIndex].filename = strdup(fileName);
                 arrayOfWords[arrayOfWordsIndex].word = strdup(word);
                 printf("thread id %ld %s\n", pthread_self(),word);
-                
                 arrayOfWordsIndex++;
-                pthread_mutex_unlock(&array_mutex);
-                // release array lock
-
                 word = strtok(NULL, DELIMETERS);
+                pthread_mutex_unlock(&array_mutex);
+                
             }
         }
         fclose(textFile);
