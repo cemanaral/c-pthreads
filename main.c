@@ -45,19 +45,25 @@ int extractNumberOfThreadsFromArguments(char** argv) {
     return atoi(argv[THREAD_NO_INDEX]);
 }
 
-void addTextFileNamesToQueue(char * directory) {
+// adds text files to queue
+// returns the number of files added
+int addTextFileNamesToQueue(char * directory) {
    DIR *dir;
    struct dirent *dirEntry;
+   int noOfFiles = 0;
 
    dir = opendir(directory);
    // loops everything under the directory
    while ((dirEntry = readdir(dir)) != NULL) {
        int isFile = (strcmp(dirEntry->d_name, ".") != 0 && strcmp(dirEntry->d_name, "..") != 0);
        // to avoid "." and ".."
-       if (isFile)
+       if (isFile) {
            queueAdd(queue, dirEntry->d_name);
+           noOfFiles++;
+       }
+           
    }
-
+   return noOfFiles;
 }
 
 
@@ -158,7 +164,7 @@ int main(int argc, char** argv) {
     int noOfThreads = extractNumberOfThreadsFromArguments(argv);
     
     queue = createQueue();
-    addTextFileNamesToQueue(directory);
+    int noOfFiles = addTextFileNamesToQueue(directory);
 
     pthread_t threads[noOfThreads];
     for (int i=0; i < noOfThreads; i++) {
@@ -170,8 +176,12 @@ int main(int argc, char** argv) {
     }
 
     free(arrayOfWords);
-    printf("word count is %d \n", arrayOfWordsIndex);
-    puts("finish");
+    printf("MAIN THREAD: All done (successfully read %d words with %d threads from %d files).\n",
+        arrayOfWordsIndex,
+        noOfThreads,
+        noOfFiles
+    );
+
 
     return 0;
 }
