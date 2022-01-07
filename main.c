@@ -169,6 +169,7 @@ int main(int argc, char** argv) {
         pthread_join(threads[i], NULL);
     }
 
+    free(arrayOfWords);
     printf("word count is %d \n", arrayOfWordsIndex);
     puts("finish");
 
