@@ -87,6 +87,7 @@ void* worker(void * args) {
         // acquire queue lock
         pthread_mutex_lock(&queue_mutex);
         fileName = queueRemove(queue);
+        printf("thread: %ld has been assigned file %s\n", pthread_self(), fileName);
         // release queue lock
         pthread_mutex_unlock(&queue_mutex);
 
@@ -113,12 +114,11 @@ void* worker(void * args) {
 
                 pthread_mutex_lock(&array_mutex);
                 if (arrayOfWordsIndex >= sizeArrayOfWords) {
-                    printf("thread id: %ld doubled array elements size to %d\n", pthread_self(),doubleSizeArrayOfWords());
+                    printf("thread: %ld enlarged array elements size to %d\n", pthread_self(),doubleSizeArrayOfWords());
                 }
-                printf("thread:%ld arrayOfWordsIndex:%d\n", pthread_self(),arrayOfWordsIndex);
                 arrayOfWords[arrayOfWordsIndex].filename = strdup(fileName);
                 arrayOfWords[arrayOfWordsIndex].word = strdup(word);
-                printf("thread id %ld %s\n", pthread_self(),word);
+                printf("thread: %ld added %s to index %d\n", pthread_self(), word, arrayOfWordsIndex);
                 arrayOfWordsIndex++;
                 word = strtok_r(rest, DELIMETERS, &rest);
                 pthread_mutex_unlock(&array_mutex);
