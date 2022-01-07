@@ -16,7 +16,6 @@
 pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t array_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-
 struct wordInfo {
     char* word;
     char* filename;
@@ -79,6 +78,21 @@ int doubleSizeArrayOfWords() {
     return sizeArrayOfWords;
 }
 
+// returns the index of given word
+// in arrayOfWords
+// if not found,
+// returns -1 
+int findWord(char* wordToBeFound) {
+    char* currentWord; 
+    for (int i=0; i < arrayOfWordsIndex; i++) {
+        currentWord = arrayOfWords[i].word;
+        if (strcmp(wordToBeFound, currentWord)==0) {
+            return i;
+        }
+    }
+    return -1;
+} 
+
 void* worker(void * args) {
     char * fileName;
     char * filePath = malloc(150);
@@ -106,13 +120,20 @@ void* worker(void * args) {
         FILE *textFile = fopen(filePath, "r");
         char buffer[BUFFER_SIZE];
         char *word;
+        int index;
 
         while(fgets(buffer, BUFFER_SIZE, textFile) != NULL){
             char* rest = buffer;
             word = strtok_r(rest, DELIMETERS, &rest);
             while( word != NULL ){
-
                 pthread_mutex_lock(&array_mutex);
+                index = findWord(word);
+                if (index != -1) {
+                     printf("thread: %ld %s already exists at index %d\n", pthread_self(), word, index);
+                     word = strtok_r(rest, DELIMETERS, &rest);
+                     pthread_mutex_unlock(&array_mutex);
+                     continue;
+                }
                 if (arrayOfWordsIndex >= sizeArrayOfWords) {
                     printf("thread: %ld enlarged array elements size to %d\n", pthread_self(),doubleSizeArrayOfWords());
                 }
